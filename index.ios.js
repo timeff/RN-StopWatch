@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View,
-  TouchableHighlight
+  Text as TextNative,
+  TouchableHighlight,
+  ScrollView
 } from 'react-native';
 import formattedTime from 'minutes-seconds-milliseconds';
-import {Container, Header, Title, Content} from 'native-base';
+import {Container, Header, Title, Content,Card,CardItem} from 'native-base';
 
 class StopWatch extends Component{
   constructor(props){
@@ -20,14 +21,19 @@ class StopWatch extends Component{
     };
   }
   render(){
-    return (<View style={styles.container}>
+    return (
+      <Container>
+      <Header>
+      <Title>Just a simple StopWatch</Title>
+      </Header>
+
 
     <View style={[styles.header]}> 
 
       <View style={[styles.timerWrapper]}>
-        <Text style={styles.timer}>
+        <TextNative style={styles.timer}>
           {formattedTime(this.state.timeElapsed)}
-        </Text>
+        </TextNative>
       </View>
 
       <View style={[styles.buttonWrapper]}> 
@@ -38,22 +44,25 @@ class StopWatch extends Component{
     </View>
 
     <View style={[styles.footer]}>
+    
         {this.laps()}
     </View>
 
-    </View>);
+    </Container>);
   }
 
   laps(){
     return this.state.laps.map(function(time,index){
-      return (<View style={styles.lap} key={index}>
-        <Text style={styles.lapText}>
-          Lap #{index+1}
-        </Text>
-        <Text style={styles.lapText}>
-          {formattedTime(time)}
-        </Text>
-      </View>);
+      return (
+        <Card key={index}>
+      <CardItem header>
+      <TextNative>Lap #{index+1}</TextNative>
+      </CardItem>
+      <CardItem>
+      <TextNative>{formattedTime(time)}</TextNative>
+      </CardItem>
+    </Card>
+   );
     })
   }
   startStopButton(){
@@ -63,9 +72,9 @@ class StopWatch extends Component{
     onPress={this.handleStartPress.bind(this)}
     style={[style,styles.button]}
     >
-        <Text>
+        <TextNative>
           {this.state.running ? 'Stop' : 'Start'}
-        </Text>
+        </TextNative>
       </TouchableHighlight>);
   }
   lapButton(){
@@ -73,9 +82,9 @@ class StopWatch extends Component{
     underlayColor='gray'
     onPress={this.handleLapPress.bind(this)}
     style={styles.button}>
-        <Text>
+        <TextNative>
           Lap
-        </Text>
+        </TextNative>
       </TouchableHighlight>);
   }
   border(color){
@@ -118,10 +127,11 @@ var styles = StyleSheet.create({
     flex:1
   },
   footer:{
-    flex:1
+    flex:1,
+
   },
   timerWrapper:{
-    flex:5,
+    flex:4,
     justifyContent:'center',
     alignItems:'center'
   },
@@ -156,6 +166,5 @@ var styles = StyleSheet.create({
     fontSize:30
   }
 })
-
 
 AppRegistry.registerComponent('stopwatch', () => StopWatch);
